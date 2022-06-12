@@ -1,7 +1,15 @@
 import game from "./engine.js";
 import {
-    PhysicalObject
+    PhysicalObject,
+    Sound
 } from "./engine.js";
+
+
+
+function randInt(n) {
+    return Math.round(Math.random() * n);
+}
+
 
 function rounding(position) {
     if (position.x < 0) position.x = 0;
@@ -12,9 +20,10 @@ function rounding(position) {
 
 class Explosion {
     constructor(position) {
+        Sound.play(80+randInt(40), 40);
         this.position = position;
         this.t = 0;
-        this.SIZE = Math.random()*32;
+        this.SIZE = Math.random() * 32;
     }
 
     live() {
@@ -25,7 +34,7 @@ class Explosion {
 
     draw(ctx) {
         ctx.fillStyle = `rgba(255, 0, 0, 0.2)`;
-        ctx.circle(this.position.x, this.position.y, this.SIZE * Math.sin(this.t / 5));
+        ctx.circle(this.position.x, this.position.y, Math.abs(this.SIZE * Math.sin(this.t / 10)));
         ctx.fill();
     }
 }
@@ -33,6 +42,7 @@ class Explosion {
 
 class Beam extends PhysicalObject {
     constructor(x, y, angle) {
+        Sound.play(330+randInt(100), 40);
         const SPEED = 8;
         super(x, y, SPEED * Math.cos(angle), SPEED * Math.sin(angle));
         this.t = 60;
@@ -241,9 +251,7 @@ function drawGameOver(ctx) {
 }
 
 
-function randInt(n) {
-    return Math.round(Math.random() * n);
-}
+
 
 game.setBackground((ctx) => {
     ctx.fillStyle = "white";
