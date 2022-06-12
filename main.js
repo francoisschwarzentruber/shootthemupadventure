@@ -20,7 +20,7 @@ function rounding(position) {
 
 class Explosion {
     constructor(position) {
-        Sound.play(80+randInt(40), 40);
+        Sound.play(80 + randInt(40), 40);
         this.position = position;
         this.t = 0;
         this.SIZE = Math.random() * 32;
@@ -42,9 +42,12 @@ class Explosion {
 
 class Beam extends PhysicalObject {
     constructor(x, y, angle) {
-        Sound.play(330+randInt(100), 40);
         const SPEED = 8;
         super(x, y, SPEED * Math.cos(angle), SPEED * Math.sin(angle));
+        Sound.play(330 + randInt(100), 40);
+
+        this.angle = angle;
+
         this.t = 60;
     }
 
@@ -56,9 +59,13 @@ class Beam extends PhysicalObject {
     }
 
     draw(ctx) {
+        const L = 4;
         ctx.strokeStyle = "yellow";
-        ctx.lineWidth = 3;
-        ctx.circle(this.position.x, this.position.y, 1);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(this.position.x - L * Math.cos(this.angle), this.position.y - L * Math.sin(this.angle));
+
+        ctx.lineTo(this.position.x + L * Math.cos(this.angle), this.position.y + L * Math.sin(this.angle));
         ctx.stroke();
     }
 }
